@@ -20,16 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp_lab4_10.cpp" />
-    <ClCompile Include="drower.cpp" />
-    <ClCompile Include="game_log.cpp" />
-    <ClCompile Include="menu.cpp" />
-    <ClCompile Include="reader.cpp" />
+    <ClCompile Include="structs.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="drower.h" />
-    <ClInclude Include="game_log.h" />
-    <ClInclude Include="menu.h" />
-    <ClInclude Include="reader.h" />
+    <ClInclude Include="structs.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

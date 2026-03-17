@@ -46,7 +46,6 @@ void GameField::initPlayground() {
 std::ostream& operator<<(std::ostream& out, const GameField& field) {
     for (int i = 0; i < field.playgroundSize; ++i) {
         for (int j = 0; j < field.playgroundSize; ++j) {
-            // якщо хочете зам≥сть 0 виводити порожнЇ м≥сце, можна додати умову:
             if (field.matrix[i][j] == 0) {
                 out << "  \t";
             }
@@ -56,7 +55,7 @@ std::ostream& operator<<(std::ostream& out, const GameField& field) {
         }
         out << "\n";
     }
-    return out; // ѕовертаЇмо пот≥к дл€ ланцюжкового виклику (напр. std::cout << g << std::endl;)
+    return out;
 }
 
 int GameField::stepCheck(int dice) {

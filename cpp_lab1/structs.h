@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+#include <iostream>
+//#include <iomanip>
 
 struct GameField
 {
@@ -14,12 +16,16 @@ struct GameField
 
 	void initPlayground();
 
-	void drowPlayground();
+	//void drowPlayground();
 
-	void step(int dice);
+	//void step(int dice);
 
 	int stepCheck(int dice);
 
 	void gameStatusCheck();
 
 };
+
+std::ostream& operator<<(std::ostream& os, const GameField& gf);
+
+GameField& operator+=(GameField& field,int dice);

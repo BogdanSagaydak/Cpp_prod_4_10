@@ -1,5 +1,4 @@
 #include "structs.h"
-#include <iostream>
 
 void GameField::initPlayground() {
     matrix.assign(playgroundSize, std::vector<int>(playgroundSize));
@@ -35,13 +34,29 @@ void GameField::initPlayground() {
     }
 }
 
-void GameField::drowPlayground() {
-    for (int i = 0; i < playgroundSize; ++i) {
-        for (int j = 0; j < playgroundSize; ++j) {
-            std::cout << matrix[i][j] << "\t";
+//void gamefield::drowplayground() {
+//    for (int i = 0; i < playgroundsize; ++i) {
+//        for (int j = 0; j < playgroundsize; ++j) {
+//            std::cout << matrix[i][j] << "\t";
+//        }
+//        std::cout << std::endl;
+//    }
+//}
+
+std::ostream& operator<<(std::ostream& out, const GameField& field) {
+    for (int i = 0; i < field.playgroundSize; ++i) {
+        for (int j = 0; j < field.playgroundSize; ++j) {
+            // якщо хочете зам≥сть 0 виводити порожнЇ м≥сце, можна додати умову:
+            if (field.matrix[i][j] == 0) {
+                out << "  \t";
+            }
+            else {
+                out << field.matrix[i][j] << "\t";
+            }
         }
-        std::cout << std::endl;
+        out << "\n";
     }
+    return out; // ѕовертаЇмо пот≥к дл€ ланцюжкового виклику (напр. std::cout << g << std::endl;)
 }
 
 int GameField::stepCheck(int dice) {
@@ -62,8 +77,40 @@ int GameField::stepCheck(int dice) {
     return 0;
 }
 
-void GameField::step(int dice) {
-    if (stepCheck(dice) == 0) return;
+//void GameField::step(int dice) {
+//    if (stepCheck(dice) == 0) return;
+//
+//    int targetRow = -1;
+//    int targetCol = -1;
+//
+//    int dRow[] = { -1, 1, 0, 0 };
+//    int dCol[] = { 0, 0, -1, 1 };
+//
+//    for (int i = 0; i < 4; ++i) {
+//        int ni = row + dRow[i];
+//        int nj = col + dCol[i];
+//
+//        if (ni >= 0 && ni < playgroundSize && nj >= 0 && nj < playgroundSize) {
+//            if (matrix[ni][nj] == dice) {
+//                targetRow = ni;
+//                targetCol = nj;
+//                break;
+//            }
+//        }
+//    }
+//
+//    std::swap(matrix[row][col], matrix[targetRow][targetCol]);
+//
+//    row = targetRow;
+//    col = targetCol;
+//
+//    countOFstep++;
+//    gameStatusCheck();
+//}
+
+GameField& operator+=(GameField& field, int dice) 
+{
+    if (field.stepCheck(dice) == 0) return field;
 
     int targetRow = -1;
     int targetCol = -1;
@@ -72,11 +119,11 @@ void GameField::step(int dice) {
     int dCol[] = { 0, 0, -1, 1 };
 
     for (int i = 0; i < 4; ++i) {
-        int ni = row + dRow[i];
-        int nj = col + dCol[i];
+        int ni = field.row + dRow[i];
+        int nj = field.col + dCol[i];
 
-        if (ni >= 0 && ni < playgroundSize && nj >= 0 && nj < playgroundSize) {
-            if (matrix[ni][nj] == dice) {
+        if (ni >= 0 && ni < field.playgroundSize && nj >= 0 && nj < field.playgroundSize) {
+            if (field.matrix[ni][nj] == dice) {
                 targetRow = ni;
                 targetCol = nj;
                 break;
@@ -84,14 +131,16 @@ void GameField::step(int dice) {
         }
     }
 
-    std::swap(matrix[row][col], matrix[targetRow][targetCol]);
+    std::swap(field.matrix[field.row][field.col], field.matrix[targetRow][targetCol]);
 
-    row = targetRow;
-    col = targetCol;
+    field.row = targetRow;
+    field.col = targetCol;
 
-    countOFstep++;
-    gameStatusCheck();
-}
+    field.countOFstep++;
+    field.gameStatusCheck();
+
+    return field;
+};
 
 void GameField::gameStatusCheck() {
     int expectedValue = 1;

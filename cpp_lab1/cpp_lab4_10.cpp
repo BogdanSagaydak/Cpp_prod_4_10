@@ -7,37 +7,53 @@ int main()
 {
 	GameField game;
 	game.initPlayground();
-	game.drowPlayground();
+	//game.drowPlayground();
+	std::cout << game;
 
 	std::cout << std::endl;
 
-	game.step(2);
+	//game.step(2);
 
-	game.drowPlayground();
+	game += 2;
 
-	std::cout << std::endl;
-
-	game.step(1);
-
-	game.drowPlayground();
+	//game.drowPlayground();
+	std::cout << game;
 
 	std::cout << std::endl;
 
-	game.step(3);
+	//game.step(1);
 
-	game.drowPlayground();
+	game += 1;
 
-	std::cout << std::endl;
-
-	game.step(1);
-
-	game.drowPlayground();
+	//game.drowPlayground();
+	std::cout << game;
 
 	std::cout << std::endl;
 
-	game.step(2);
+	//game.step(3);
 
-	game.drowPlayground();
+	game += 3;
+
+	//game.drowPlayground();
+	std::cout << game;
+
+	std::cout << std::endl;
+
+	//game.step(1);
+
+	game += 1;
+
+	//game.drowPlayground();
+	std::cout << game;
+
+	std::cout << std::endl;
+
+	//game.step(2);
+
+	game += 2;
+
+	//game.drowPlayground();
+	std::cout << game;
 
 	return 0;
 };

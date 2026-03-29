@@ -21,9 +21,15 @@
     <ClCompile Include="structs.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="structs.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>

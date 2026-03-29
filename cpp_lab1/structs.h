@@ -1,9 +1,13 @@
 #pragma once
 #include <vector>
 #include <iostream>
+#include <cstdlib>
+#include "input.h"
 
 struct GameField
 {
+	int gameMod = 0;
+
 	int playgroundSize = 2;
 
 	std::vector<std::vector<int>> matrix;
@@ -28,3 +32,12 @@ struct GameField
 std::ostream& operator<<(std::ostream& os, const GameField& gf);
 
 GameField& operator+=(GameField& field,int dice);
+
+struct GameController
+{
+
+	void init(GameField *game);
+
+	void mainCycle(GameField* game);
+
+};

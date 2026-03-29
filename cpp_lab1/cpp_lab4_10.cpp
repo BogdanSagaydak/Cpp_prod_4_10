@@ -6,54 +6,12 @@
 int main()
 {
 	GameField game;
-	game.initPlayground();
-	//game.drowPlayground();
-	std::cout << game;
+	GameController controller;
 
-	std::cout << std::endl;
+	controller.init(&game);
 
-	//game.step(2);
-
-	game += 2;
-
-	//game.drowPlayground();
-	std::cout << game;
-
-	std::cout << std::endl;
-
-	//game.step(1);
-
-	game += 1;
-
-	//game.drowPlayground();
-	std::cout << game;
-
-	std::cout << std::endl;
-
-	//game.step(3);
-
-	game += 3;
-
-	//game.drowPlayground();
-	std::cout << game;
-
-	std::cout << std::endl;
-
-	//game.step(1);
-
-	game += 1;
-
-	//game.drowPlayground();
-	std::cout << game;
-
-	std::cout << std::endl;
-
-	//game.step(2);
-
-	game += 2;
-
-	//game.drowPlayground();
-	std::cout << game;
+	//game += 2;
+	//std::cout << game;
 
 	return 0;
 };

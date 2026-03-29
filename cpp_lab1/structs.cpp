@@ -149,7 +149,8 @@ void GameField::gameStatusCheck() {
         for (int j = 0; j < n; ++j) {
             if (i == n - 1 && j == n - 1) {
                 if (matrix[i][j] == 0) {
-                    std::cout << "Succses! You solve the task in " << countOFstep << " step!" << std::endl;
+                    //std::cout << "Succses! You solve the task in " << countOFstep << " step!" << std::endl;
+                    gameMod = -1;
                 }
                 return;
             }
@@ -160,4 +161,57 @@ void GameField::gameStatusCheck() {
             expectedValue++;
         }
     }
+}
+
+
+void GameController::init(GameField* game)
+{
+    //std::cout << game->gameMod << "\n";
+    game->playgroundSize = getInt(game->gameMod);
+    game->gameMod = 1;
+    game->initPlayground();
+    mainCycle(game);
+    
+    //std::cout << game->gameMod;
+}
+
+void GameController::mainCycle(GameField* game)
+{
+    //std::cout << game->gameMod << "\n";
+    int val;
+    while (true)
+    {
+        std::system("cls");
+        std::cout << *game;
+        std::cout << "Count of step: " << game->countOFstep << std::endl;
+        std::cout << "\nTo finish game enter any letter or negative int\n";
+        val = getInt(game->gameMod);
+        if (val == -1) 
+        {
+            std::string confimation;
+            std::cout << "Do you really want finish the game? \nEnter Y to finish or N to continue: ";
+            std::cin >> confimation;
+            if (confimation == "Y" or confimation == "y")
+            {
+                game->gameMod = -1;
+                std::cout << "Game Over!";
+                return;
+            }
+
+        }
+        else 
+        {
+            *game += val;
+        }
+        game->gameStatusCheck();
+        if (game->gameMod == -1)
+        {
+            std::system("cls");
+            std::cout << *game;
+            std::cout << "Succses! You solve the task in " << game->countOFstep << " step!" << std::endl;
+            break;
+        }
+
+    }
+    //std::cout << *game;
 }

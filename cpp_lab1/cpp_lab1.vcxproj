@@ -20,9 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp_lab4_10.cpp" />
+    <ClCompile Include="input.cpp" />
     <ClCompile Include="structs.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="input.h" />
     <ClInclude Include="structs.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

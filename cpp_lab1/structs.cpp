@@ -34,15 +34,6 @@ void GameField::initPlayground() {
     }
 }
 
-//void gamefield::drowplayground() {
-//    for (int i = 0; i < playgroundsize; ++i) {
-//        for (int j = 0; j < playgroundsize; ++j) {
-//            std::cout << matrix[i][j] << "\t";
-//        }
-//        std::cout << std::endl;
-//    }
-//}
-
 std::ostream& operator<<(std::ostream& out, const GameField& field) {
     for (int i = 0; i < field.playgroundSize; ++i) {
         for (int j = 0; j < field.playgroundSize; ++j) {
@@ -72,44 +63,16 @@ int GameField::stepCheck(int dice) {
             }
         }
     }
-    std::cout << "Incorrect step" << std::endl;
     return 0;
 }
 
-//void GameField::step(int dice) {
-//    if (stepCheck(dice) == 0) return;
-//
-//    int targetRow = -1;
-//    int targetCol = -1;
-//
-//    int dRow[] = { -1, 1, 0, 0 };
-//    int dCol[] = { 0, 0, -1, 1 };
-//
-//    for (int i = 0; i < 4; ++i) {
-//        int ni = row + dRow[i];
-//        int nj = col + dCol[i];
-//
-//        if (ni >= 0 && ni < playgroundSize && nj >= 0 && nj < playgroundSize) {
-//            if (matrix[ni][nj] == dice) {
-//                targetRow = ni;
-//                targetCol = nj;
-//                break;
-//            }
-//        }
-//    }
-//
-//    std::swap(matrix[row][col], matrix[targetRow][targetCol]);
-//
-//    row = targetRow;
-//    col = targetCol;
-//
-//    countOFstep++;
-//    gameStatusCheck();
-//}
-
 GameField& operator+=(GameField& field, int dice) 
 {
-    if (field.stepCheck(dice) == 0) return field;
+    if (field.stepCheck(dice) == 0) 
+    {
+        field.errorFlag = 1;
+        return field; 
+    }
 
     int targetRow = -1;
     int targetCol = -1;
@@ -149,7 +112,6 @@ void GameField::gameStatusCheck() {
         for (int j = 0; j < n; ++j) {
             if (i == n - 1 && j == n - 1) {
                 if (matrix[i][j] == 0) {
-                    //std::cout << "Succses! You solve the task in " << countOFstep << " step!" << std::endl;
                     gameMod = -1;
                 }
                 return;
@@ -163,25 +125,99 @@ void GameField::gameStatusCheck() {
     }
 }
 
+/////////////////////////////////////////////////
+
+int GameController::getInt(int mod) {
+    std::string input;
+    int value;
+    while (true) {
+        try {
+            if (mod == 0)
+            {
+                std::cout << "Enter gamefield size: ";
+            }
+            else
+            {
+                std::cout << "Enter num of dice: ";
+            }
+            std::cin >> input;
+            size_t pos;
+            value = std::stoi(input, &pos);
+            if (pos != input.length()) {
+                if (mod == 0) {
+                    std::cout << "\nIncorrect Argument!";
+                    continue;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            if (mod == 0)
+            {
+                if (value < 2)
+                {
+                    std::cout << "\nSize should be 2 or bigger! ";
+                    continue;
+                }
+            }
+            else
+            {
+                if (value < 1) {
+                    return -1;
+                }
+            }
+
+            while (std::isspace(std::cin.peek()) &&
+                std::cin.peek() != '\n') {
+                std::cin.ignore();
+            }
+            if (std::cin.peek() != '\n') {
+                std::cout << "Entered extra arguments! Will be used only first one(" << value << ")." << std::endl;
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                
+            }
+            return value;
+
+        }
+        catch (...) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            if (mod == 0) {
+                std::cout << "Incorrect Argument!";
+            }
+            else
+            {
+                return -1;
+            }
+        }
+    }
+}
+
+////////////////////////////////////////////////////
 
 void GameController::init(GameField* game)
 {
-    //std::cout << game->gameMod << "\n";
     game->playgroundSize = getInt(game->gameMod);
     game->gameMod = 1;
     game->initPlayground();
     mainCycle(game);
     
-    //std::cout << game->gameMod;
 }
 
 void GameController::mainCycle(GameField* game)
 {
-    //std::cout << game->gameMod << "\n";
     int val;
     while (true)
     {
         std::system("cls");
+
+        if (game->errorFlag == 1)
+        {
+            std::cout << "Incorrect step!" << std::endl;
+            game->errorFlag = 0;
+        }
+
         std::cout << *game;
         std::cout << "Count of step: " << game->countOFstep << std::endl;
         std::cout << "\nTo finish game enter any letter or negative int\n";
@@ -213,5 +249,4 @@ void GameController::mainCycle(GameField* game)
         }
 
     }
-    //std::cout << *game;
 }

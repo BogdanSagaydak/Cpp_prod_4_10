@@ -10,9 +10,6 @@ int main()
 
 	controller.init(&game);
 
-	//game += 2;
-	//std::cout << game;
-
 	return 0;
 };
 

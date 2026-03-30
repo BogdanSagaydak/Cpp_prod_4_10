@@ -2,7 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <cstdlib>
-#include "input.h"
+#include <string>
 
 struct GameField
 {
@@ -17,11 +17,9 @@ struct GameField
 	int row = 3;
 	int col = 3;
 
+	int errorFlag = 0;
+
 	void initPlayground();
-
-	//void drowPlayground();
-
-	//void step(int dice);
 
 	int stepCheck(int dice);
 
@@ -35,6 +33,7 @@ GameField& operator+=(GameField& field,int dice);
 
 struct GameController
 {
+	int getInt(int mod);
 
 	void init(GameField *game);
 

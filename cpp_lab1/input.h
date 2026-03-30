@@ -2,4 +2,4 @@
 #include <iostream>
 #include <string>
 
-int getInt(int mod);
+//int getInt(int mod);

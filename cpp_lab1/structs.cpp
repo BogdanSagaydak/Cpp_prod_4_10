@@ -70,7 +70,7 @@ GameField& operator+=(GameField& field, int dice)
 {
     if (field.stepCheck(dice) == 0) 
     {
-        field.errorFlag = 1;
+        field.errorFlag = dice;
         return field; 
     }
 
@@ -112,7 +112,7 @@ void GameField::gameStatusCheck() {
         for (int j = 0; j < n; ++j) {
             if (i == n - 1 && j == n - 1) {
                 if (matrix[i][j] == 0) {
-                    gameMod = -1;
+                    gameMod = 2;
                 }
                 return;
             }
@@ -196,11 +196,63 @@ int GameController::getInt(int mod) {
 
 ////////////////////////////////////////////////////
 
+void GameController::savePlaygraund(GameField* game)
+{
+
+    std::ofstream logFile("game_log.txt", std::ios::app);
+
+    logFile << "#### #### ####\n";
+
+    logFile << "Step: " << game->countOFstep << std::endl;
+
+    for (int i = 0; i < game->playgroundSize; ++i) {
+        for (int j = 0; j < game->playgroundSize; ++j) {
+            if (game->matrix[i][j] == 0) {
+                logFile << "  \t";
+            }
+            else {
+                logFile << game->matrix[i][j] << "\t";
+            }
+        }
+        logFile << "\n";
+    }
+
+    logFile.close();
+}
+
+void GameController::saveTime(GameField* game)
+{
+    time_t date = time(nullptr);
+    tm ltm;
+
+    std::ofstream logFile("game_log.txt", std::ios::app);
+    
+    if (game->gameMod == 0)
+    {
+        if (localtime_s(&ltm, &date) == 0) {
+            logFile << "Game started : " << std::put_time(&ltm, " %d.%m.%Y %H:%M:%S") << std::endl;
+        }
+    }
+    else
+    {
+        if (localtime_s(&ltm, &date) == 0) {
+            logFile << "End time : " << std::put_time(&ltm, " %d.%m.%Y %H:%M:%S") << std::endl << std::endl;
+        }
+    }
+    
+    logFile.close();
+}
+
 void GameController::init(GameField* game)
 {
+    std::ofstream logFile("game_log.txt", std::ios::app);
+    saveTime(game);
     game->playgroundSize = getInt(game->gameMod);
+    logFile << "Playground size: " << game->playgroundSize << std::endl;
+    logFile.close();
     game->gameMod = 1;
     game->initPlayground();
+
     mainCycle(game);
     
 }
@@ -212,10 +264,18 @@ void GameController::mainCycle(GameField* game)
     {
         std::system("cls");
 
-        if (game->errorFlag == 1)
+        if (game->errorFlag != 0)
         {
-            std::cout << "Incorrect step!" << std::endl;
+            std::ofstream logFile("game_log.txt", std::ios::app);
+            logFile << "Incorrect step! Dice num " << game->errorFlag << std::endl;
+            logFile.close();
+
+            std::cout << "Incorrect step! Dice num " << game->errorFlag << std::endl;
             game->errorFlag = 0;
+        }
+        else
+        {
+            savePlaygraund(game);
         }
 
         std::cout << *game;
@@ -229,6 +289,11 @@ void GameController::mainCycle(GameField* game)
             std::cin >> confimation;
             if (confimation == "Y" or confimation == "y")
             {
+                std::ofstream logFile("game_log.txt", std::ios::app);
+                logFile << "Game stopped on step " << game->countOFstep << std::endl;
+                logFile.close();
+                saveTime(game);
+
                 game->gameMod = -1;
                 std::cout << "Game Over!";
                 return;
@@ -240,8 +305,15 @@ void GameController::mainCycle(GameField* game)
             *game += val;
         }
         game->gameStatusCheck();
-        if (game->gameMod == -1)
+        if (game->gameMod == 2)
         {
+            savePlaygraund(game);
+
+            std::ofstream logFile("game_log.txt", std::ios::app);
+            logFile << "Game succsesfully finished in " << game->countOFstep << " step!" << std::endl;
+            logFile.close();
+            saveTime(game);         
+
             std::system("cls");
             std::cout << *game;
             std::cout << "Succses! You solve the task in " << game->countOFstep << " step!" << std::endl;

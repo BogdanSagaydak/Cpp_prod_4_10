@@ -3,6 +3,10 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
+#include <fstream>
+#include <ctime>
+#include<iomanip>
+#include "input.h"
 
 struct GameField
 {
@@ -34,6 +38,10 @@ GameField& operator+=(GameField& field,int dice);
 struct GameController
 {
 	int getInt(int mod);
+
+	void savePlaygraund(GameField* game);
+
+	void saveTime(GameField* game);
 
 	void init(GameField *game);
 
